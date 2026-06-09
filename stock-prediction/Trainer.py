@@ -20,7 +20,7 @@ class Trainer():
             self.optimizer.step()
             
             total_loss += loss.item()*X.size(0)
-            return total_loss / len(dataloader.dataset)
+        return total_loss / len(dataloader.dataset)
     def evaluate(self,dataloader):
         self.model.eval()
         total_loss = 0.0
@@ -32,10 +32,10 @@ class Trainer():
                 loss = self.loss_fn(preds,y)
                 total_loss += loss.item()*X.size(0)
                 if preds.shape[1] == 1:
-                    predicted = (torch.sigmoid(preds) > 0.5).long().squeeze()
+                    predicted = (torch.sigmoid(preds) > 0.5).float()
                 else:
                     predicted = preds.argmax(dim=1)
-                    correct += (predicted == y).sum().item()
+                correct += (predicted == y).sum().item()
         avg_loss = total_loss / len(dataloader.dataset)
         accuracy = correct / len(dataloader.dataset)
         return avg_loss , accuracy
