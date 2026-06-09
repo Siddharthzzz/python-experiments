@@ -141,6 +141,31 @@ trainer.fit(
 )
 ```
 
+# Quant Deep Learning Pipeline – NVIDIA Direction Predictor
+
+**Added:** 2026-06-10
+
+A complete pipeline that uses historical NVIDIA price data to predict the next day's price direction (UP/DOWN) with a feed‑forward neural network and a reusable training framework.
+
+## What it does
+- Fetches NVDA data via `yfinance`
+- Feature engineering: daily returns (%), 20‑day moving average, 20‑day volatility
+- Converts data into rolling 20‑day sequences with a custom PyTorch `Dataset`
+- Trains a `TinyStockPredictor` model using the `Trainer` class
+- Evaluates on a chronological test set (most recent 10% of data, no future leakage)
+- Outputs a next‑day forecast with confidence
+
+## Results (sample run)
+- Best validation accuracy: **62.2%**
+- Test accuracy (out‑of‑sample): **54.9%**
+- Next‑day forecast: **UP (probability 0.9166)**
+
+## How to run
+```bash
+cd stock-prediction
+pip install torch yfinance pandas scikit-learn
+python run_pipeline.py
+
 ## Concepts Demonstrated
 
 * Neural Network Training
